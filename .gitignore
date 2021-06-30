@@ -1,0 +1,4 @@
+# Project exclude paths
+.idea
+/out/
+alg_23062021.iml
