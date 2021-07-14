@@ -15,11 +15,10 @@ public class MyLinkedList<E> implements Iterable<E> {
 
     private class Iter implements Iterator<E> {
         private Node current;
-        private Node first;
 
         public Iter(Node current) {
+            current.setPrev(null);
             this.current = current;
-            this.first = current;
         }
 
         @Override
@@ -29,12 +28,8 @@ public class MyLinkedList<E> implements Iterable<E> {
 
         @Override
         public E next() {
-            if (!hasNext()) {
+            if (!hasNext()){
                 return null;
-            }
-            if (current.equals(first)) {
-                first = null;
-                return current.getValue();
             }
             current = current.getNext();
             return current.getValue();
