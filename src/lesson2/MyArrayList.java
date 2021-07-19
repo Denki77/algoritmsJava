@@ -2,6 +2,7 @@ package lesson2;
 
 import java.util.Arrays;
 import java.util.NoSuchElementException;
+import java.util.Random;
 
 public class MyArrayList<E extends Comparable<E>> {
     private E[] list;
@@ -21,14 +22,23 @@ public class MyArrayList<E extends Comparable<E>> {
     }
 
     public void add(E item) {
-        //  проверить переполнение и при необходимости увеличиваем массив на size/2 +1
+        if (size == list.length) {
+            list = Arrays.copyOf(list, (int) (list.length * 1.5));
+        }
+
         list[size] = item;
         size++;
     }
 
     public void add(int index, E item) {
-        // проверить корректность index  [0..size]
-        //  проверить переполнение и при необходимости увеличиваем массив на size/2 +1
+        if (index < 0 || index > size) {
+            throw new ArrayIndexOutOfBoundsException();
+        }
+
+        if (size == list.length) {
+            list = Arrays.copyOf(list, (int) (list.length * 1.5));
+        }
+
         for (int i = size; i > index; i--) {
             list[i] = list[i - 1];
         }
@@ -37,10 +47,9 @@ public class MyArrayList<E extends Comparable<E>> {
     }
 
     public void remove(int index) {
-        if (isEmpty()) {
+        if (isEmpty() || index < 0 || index >= size) {
             throw new NoSuchElementException();
         }
-        // проверить корректность index  [0..size)
         for (int i = index; i <= size; i++) {
             list[i] = list[i + 1];
         }
@@ -58,7 +67,9 @@ public class MyArrayList<E extends Comparable<E>> {
     }
 
     public E get(int index) {
-        // проверить корректность index  [0..size)
+        if (isEmpty() || index < 0 || index >= size) {
+            throw new NoSuchElementException();
+        }
         return list[index];
     }
 
@@ -87,6 +98,14 @@ public class MyArrayList<E extends Comparable<E>> {
 
     public int size() {
         return size;
+    }
+
+    public void shuffle(int deep) {
+        Random random = new Random();
+        while (deep > 0) {
+            swap(random.nextInt(size), random.nextInt(size));
+            deep--;
+        }
     }
 
 
